@@ -1,5 +1,6 @@
 // necesitamos path para configurar nuestras rutas de archivos
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // Este es nuestro archivo de entrada donde va estar todo nuestro código de nuestra app, tener en cuenta que se pueden tener varios entry.
@@ -9,6 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'), // __dirname es una variable global que nos permite acceder a la ruta raíz del proyecto
     filename: 'bundle.js'
   },
+  mode : 'development',
   // Las extensiones que queremos que webpack reconozca nuestros archivos
   resolve: {
     extensions: ['.js', '.jsx']
@@ -22,12 +24,28 @@ module.exports = {
         use: [
           { loader: 'babel-loader' }
         ]
+      },
+      {
+        test: /\.html$/,
+        use: [
+          { loader: 'html-loader' }
+        ]
       }
     ]
   },
+  // Configuración de los plugins
+  plugins: [
+    new HtmlWebpackPlugin({
+      // El template es el archivo que queremos que webpack use para generar nuestro index.html
+      template: './public/index.html',
+      filename: './index.html'
+    }),
+  ],
   // Configuración de devServer
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
     compress: true,
     port: 9000
   }
