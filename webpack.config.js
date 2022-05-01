@@ -1,6 +1,7 @@
 // necesitamos path para configurar nuestras rutas de archivos
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   // Este es nuestro archivo de entrada donde va estar todo nuestro código de nuestra app, tener en cuenta que se pueden tener varios entry.
@@ -30,6 +31,14 @@ module.exports = {
         use: [
           { loader: 'html-loader' }
         ]
+      },
+      {
+        test: /\.s[ac]ss$/,
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' }
+        ]
       }
     ]
   },
@@ -40,6 +49,9 @@ module.exports = {
       template: './public/index.html',
       filename: './index.html'
     }),
+    new MiniCssExtractPlugin({
+      filename: 'style.css'
+    })
   ],
   // Configuración de devServer
   devServer: {
